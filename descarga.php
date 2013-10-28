@@ -1,6 +1,9 @@
 <?php
 include("config/database.php"); //conectamos con base de datos
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if(isset($_GET['id'])){
 
 $query="SELECT * FROM `movimiento` WHERE id_movimiento='".$_GET['id']."'";   
@@ -35,15 +38,7 @@ mysql_query("SET NAMES 'utf8'");
 $nombre = 'Header – Registros de detalle – Footer.txt'; // Nombre del archivo final
 header( "Content-Type: application/octet-stream");
 header( "Content-Disposition: attachment; filename=".$nombre.""); //archivo de salida
-
-
-
-
-	$filename="Header  Registros de detalle  Footer.txt";
-	unlink($filename); 	
-	$ar=fopen("Header  Registros de detalle  Footer.txt","a") or die("Problemas en la creacion");
-  
-  
+ 
   //Cargamos el header  
 
   echo $row_header['Header'];
@@ -51,7 +46,7 @@ header( "Content-Disposition: attachment; filename=".$nombre.""); //archivo de s
   if(strlen($row_header['Empresa'])<6){
 	  $cantidad=strlen($row_header['Empresa']);
 	  $Cadena=$row_header['Empresa'];
-	
+
   	  for ($cantidad; $cantidad < 6; $cantidad++) {
 		$Cadena='0'.$Cadena;
 	  }
@@ -123,14 +118,15 @@ header( "Content-Disposition: attachment; filename=".$nombre.""); //archivo de s
   echo $row_header['Importe'];}
     
   $FecAcred=date("Ymd", strtotime($row_header['FecAcred']));
-  fputs($ar,$FecAcred);
+  echo $FecAcred;
+
   echo $row_header['Filler'];
 
   echo "\r\n";
   
   //Cargamos el detalle
   
-  if(strlen($row_detalle['nombre'])<16){
+  if(strlen($row_detalle['Nombre'])<16){
 	  $cantidad=strlen($row_detalle['Nombre']);
 	  $Cadena=$row_detalle['Nombre'];
 	
@@ -154,7 +150,7 @@ header( "Content-Disposition: attachment; filename=".$nombre.""); //archivo de s
   echo $row_detalle['Cuit'];}
   
   $FecAcred=date("Ymd", strtotime($row_detalle['FechAcred']));
-  fputs($ar,$FecAcred);
+  echo $FecAcred;
   
   echo $row_detalle['TipoCuenta'];
   echo $row_detalle['Moneda'];
@@ -253,7 +249,7 @@ header( "Content-Disposition: attachment; filename=".$nombre.""); //archivo de s
   echo $row_detalle['IdCliente'];}  
   
   $FecAcred=date("Ymd", strtotime($row_detalle['FecMov']));
-  fputs($ar, $FecAcred);
+  echo $FecAcred;
   echo $row_detalle['Filler'];
   
   echo "\r\n";
